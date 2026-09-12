@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Panorama interaction harness</title>
+<link rel="stylesheet" href="css/styles.css">
+<style>
+  body { padding: 24px; }
+  #host { width: 700px; }
+  #out { font: 13px ui-monospace, Menlo, monospace; margin-top: 20px; }
+  .p { color: #3f7d58; }
+  .f { color: #b8563a; font-weight: 700; }
+  h1 { margin-bottom: 12px; }
+</style>
+</head>
+<body>
+<h1>Panorama interaction harness</h1>
+<p class="muted small">Drives the real viewer with synthetic pointer events. Not part of the app.</p>
+<div id="out"></div>
+<div id="host" style="margin-top:20px"></div>
+<div id="toast" hidden></div>
+
+<script src="js/data.js"></script>
+<script src="js/store.js"></script>
+<script src="js/render.js"></script>
+<script src="js/views-customer.js"></script>
+<script>
+function render() {}                       // app.js isn't loaded; V.login's mount wants this
+
+const out = document.getElementById('out');
+let pass = 0, fail = 0;
+function ok(name, cond, extra) {
+  if (cond) { pass++; out.insertAdjacentHTML('beforeend', `<div class="p">ok &nbsp;&nbsp;${name}</div>`); }
+  else { fail++; out.insertAdjacentHTML('beforeend', `<div class="f">FAIL ${name}${extra ? ' → ' + extra : ''}</div>`); }
+}
+
+Store.load();
+const p = Store.seedDemo();
+document.getElementById('host').innerHTML = panoramaViewer(p);
+bindPanorama();
+
+const root = document.querySelector('[data-pano]');
+const view = root.querySelector('[data-pano-view]');
+const strip = +root.dataset.strip;
+const ticks = [...root.querySelectorAll('.pano-compass span')];
+const facing = () => ticks.findIndex(t => t.classList.contains('on'));
+
+function drag(dx) {
+  view.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, clientX: 400, button: 0, pointerId: 1 }));
+  view.dispatchEvent(new PointerEvent('pointermove', { bubbles: true, clientX: 400 - dx, button: 0, pointerId: 1 }));
+  view.dispatchEvent(new PointerEvent('pointerup',   { bubbles: true, clientX: 400 - dx, button: 0, pointerId: 1 }));
+}
+
+ok('viewer mounted', !!view && view.clientWidth > 100, 'clientWidth ' + (view && view.clientWidth));
+ok('track is three strips wide',
+  Math.abs(root.querySelector('[data-pano-track]').scrollWidth - strip * 3) < 3,
+  `${root.querySelector('[data-pano-track]').scrollWidth} vs ${strip * 3}`);
+ok('view is actually scrollable', view.scrollWidth > view.clientWidth + 10,
+  `scrollWidth ${view.scrollWidth}, clientWidth ${view.clientWidth}`);
+ok('parked in the middle strip', Math.abs(view.scrollLeft - strip) < 2, 'scrollLeft ' + view.scrollLeft);
+ok('compass starts on a real wall', facing() >= 0, 'facing ' + facing());
+
+const atStart = view.scrollLeft;
+drag(300);
+ok('dragging right pans the room', Math.abs(view.scrollLeft - atStart) > 100,
+  `${atStart} → ${view.scrollLeft}`);
+
+drag(-300);
+ok('dragging back returns to the start', Math.abs(view.scrollLeft - atStart) < 2,
+  `${view.scrollLeft} vs ${atStart}`);
+
+// Walk right through a whole turn and make sure every wall is faced.
+const seen = new Set();
+for (let i = 0; i < 28; i++) { drag(strip / 24); seen.add(facing()); }
+ok('a full turn faces all four walls', seen.size === 4, 'saw ' + [...seen].sort().join(','));
+ok('still parked inside the middle strip after a full turn',
+  view.scrollLeft >= strip - 2 && view.scrollLeft < strip * 2 + 2, 'scrollLeft ' + view.scrollLeft);
+
+// The bug that started this: panning left past the origin used to hit the
+// browser's scrollLeft clamp at 0 and stick.
+for (let i = 0; i < 30; i++) drag(-strip / 20);
+ok('panning left past the origin keeps moving',
+  view.scrollLeft >= strip - 2 && view.scrollLeft < strip * 2 + 2, 'scrollLeft ' + view.scrollLeft);
+const beforeLeft = view.scrollLeft;
+drag(-200);
+ok('left pan still responds after wrapping', Math.abs(view.scrollLeft - beforeLeft) > 50,
+  `${beforeLeft} → ${view.scrollLeft}`);
+
+// Arrows
+const before = view.scrollLeft;
+root.querySelector('.pano-arrow.right').click();
+ok('right arrow pans', Math.abs(view.scrollLeft - before) > 50, `${before} → ${view.scrollLeft}`);
+root.querySelector('.pano-arrow.left').click();
+ok('left arrow pans back', Math.abs(view.scrollLeft - before) < 2, `${view.scrollLeft} vs ${before}`);
+
+ok('overlays stay put while the room pans',
+  root.querySelector('.pano-badge').getBoundingClientRect().left ===
+  root.querySelector('.pano-stage').getBoundingClientRect().left + 12,
+  'badge drifted with the scroll');
+
+out.insertAdjacentHTML('beforeend',
+  `<div style="margin-top:14px;font-weight:700">${pass} passed, ${fail} failed</div>`);
+</script>
+</body>
+</html>

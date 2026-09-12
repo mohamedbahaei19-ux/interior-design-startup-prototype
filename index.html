@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kamer — a real designer for one room</title>
+<link rel="stylesheet" href="css/styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23b8563a'/><path d='M9 22V10h3v5l5-5h4l-5.5 5.5L22 22h-4l-4-5.2-2 2V22z' fill='%23fdfaf5'/></svg>">
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="#/">
+    <span class="brand-mark">K</span>
+    <span class="brand-name">Kamer</span>
+  </a>
+  <nav class="topnav" id="topnav"></nav>
+  <div id="account"></div>
+</header>
+
+<main id="app"></main>
+
+<footer class="footer">
+  <span>Kamer — prototype. Placeholder brand name, seeded data, no real payments.</span>
+  <button id="resetBtn" class="linky">Reset demo data</button>
+</footer>
+
+<div id="toast" class="toast" hidden></div>
+
+<script src="js/data.js"></script>
+<script src="js/store.js"></script>
+<script src="js/render.js"></script>
+<script src="js/views-customer.js"></script>
+<script src="js/views-designer.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
