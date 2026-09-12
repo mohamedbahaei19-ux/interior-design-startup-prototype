@@ -14,8 +14,12 @@ python3 serve.py          # http://localhost:8127
 
 To share it with someone else, see [DEPLOY.md](DEPLOY.md) — GitHub Pages, one push.
 
-Plain HTML/CSS/JS — no build step, no dependencies, no network calls. State lives in
-`localStorage`, so the customer and designer sides talk to each other in one browser.
+Plain HTML/CSS/JS — no build step, no dependencies. State lives in `localStorage`, so the
+customer and designer sides talk to each other in one browser.
+
+The only network request is two webfonts from Google Fonts — **Newsreader** for headings and
+**Inter** for everything else. Both fall back to the previous system stacks, so the site still
+works offline or if fonts are blocked; it just looks plainer.
 
 ## Accounts
 
@@ -29,13 +33,14 @@ Designers sign in as one of the seeded profiles. There's no password — it's a 
 ## The loop it demonstrates
 
 1. **Brief** (`#/brief/1`) — room and package.
-2. **In your own words** — the customer writes what they want as free text. Style tags are
-   optional extras they can add afterwards; we suggest some from what they wrote but never
-   apply them. Budget is a slider whose range depends on the package.
+2. **In your own words** — the customer writes what they want as free text; a person reads it.
+   Nothing is derived from it automatically. Budget is a slider whose range depends on the
+   package (refresh €100–5,000, complete room €300–10,000).
 3. **Capture the room** — a guided four-shot camera flow: stand in the middle, photograph each
    wall, turning a quarter turn between shots. Tag any wall that has a window or a door.
    Then three measurements, which are what give the 360° view its scale.
-4. **Match** — designers ranked by style fit, room type and reviews.
+4. **Choose a designer** — all six listed for the customer to pick from. No match score: phase
+   one is manual, so the order is just works-in-this-room-type first, then track record.
 5. **Checkout** — payment marked held in escrow.
 6. **Designer workspace** — the brief arrives complete. Filter the product library, add pieces,
    watch the budget meter, write layout notes, **generate the 360° preview**, deliver.
@@ -80,14 +85,13 @@ const rateLabel = () => 'X%';
 running total, the "€806 left" meter and the over-budget warning all depend on them. Making those
 X too would gut the feature.
 
-Matching no longer scores designers on price, since there isn't one. It weighs style fit (55%),
-room type (30%) and rating (15%).
+There is no automated matching to price against, either — the customer browses and chooses.
 
 ## What's real vs. faked
 
-Real: role-gated accounts, style suggestions from free text, matching, fit checking against the
-customer's measurements, per-package budget ranges, the escrow state machine, the revision limit,
-floor-plan auto-layout, and the panorama geometry and wrapping.
+Real: role-gated accounts, fit checking against the customer's measurements, per-package budget
+ranges, the escrow state machine, the revision limit, floor-plan auto-layout, and the panorama
+geometry and wrapping.
 
 The camera capture is real — it uses `getUserMedia`, so it needs an HTTPS origin (or localhost);
 elsewhere it falls back to file upload and says why.
@@ -101,8 +105,9 @@ designers, reviews and social handles are seeded in `js/data.js`.
 - **Curated library or open sourcing** — designers currently pick from a fixed product library.
   The alternative is letting them paste any product URL, which is more flexible and much harder
   to keep fit-checked.
-- **Shortlist or assignment** — the customer picks their designer. Assigning one is cheaper to
-  operate but weakens the "choose who you work with" promise in the plan.
+- **Shortlist or assignment** — the customer picks their designer from an unranked list. That's
+  honest for phase one, but it leaves a new designer with no reviews at the bottom of every
+  list — the exact cold-start problem the plan says you're solving for them.
 - **Turnaround** — `[X] days` in the plan; seeded here as 3–7 days per designer.
 - **Products per package** — 4–6 for a refresh, 8–12 for a complete room (`js/views-designer.js`).
 
@@ -113,8 +118,8 @@ index.html            shell
 serve.py              static file server
 publish.sh            push to GitHub Pages (see DEPLOY.md)
 css/styles.css        all styling
-js/data.js            seed data, pricing placeholders, style keywords
-js/store.js           state, accounts, persistence, matching, fit checks
+js/data.js            seed data, pricing placeholders, budget ranges
+js/store.js           state, accounts, persistence, fit checks
 js/render.js          SVG: silhouettes, floor plan, 360° panorama
 js/views-customer.js  sign-in, landing, brief wizard, matching, checkout, project
 js/views-designer.js  queue, workspace, application

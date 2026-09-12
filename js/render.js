@@ -126,7 +126,7 @@ function svgPortfolio(d, i, after) {
     ${after ? `<circle cx="104" cy="58" r="9" fill="hsl(${(hue + 60) % 360} 45% 55%)"/>
                <rect x="100" y="58" width="8" height="14" fill="hsl(${hue} 20% 40%)"/>` : ''}
     <rect x="8" y="70" width="${after ? 118 : 70}" height="6" rx="3" fill="${after ? `hsl(${hue} 30% 88%)` : '#b5aea3'}"/>
-    <text x="6" y="14" font-size="9" font-family="sans-serif" fill="hsl(${hue} 20% 32%)">${after ? 'after' : 'before'}</text>
+    <text x="6" y="14" font-size="9" font-family="inherit" fill="hsl(${hue} 20% 32%)">${after ? 'after' : 'before'}</text>
   </svg>`;
 }
 
@@ -233,7 +233,7 @@ function svgFloorPlan(project) {
   const draw = p => {
     const x = g.ox + p.x * g.k, y = g.oy + p.y * g.k, w = p.w * g.k, h = p.d * g.k;
     const label = w > 44 ? `<text x="${x + w / 2}" y="${y + h / 2 + 3}" font-size="9" text-anchor="middle"
-        fill="#373532" font-family="sans-serif">${esc(p.prod.name.split(' ')[0])}</text>` : '';
+        fill="#373532" font-family="inherit">${esc(p.prod.name.split(' ')[0])}</text>` : '';
     return `<g><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3"
         fill="${p.cat === 'rug' ? p.prod.color : shade(p.prod.color, 12)}"
         fill-opacity="${p.cat === 'rug' ? .55 : 1}"
@@ -257,10 +257,10 @@ function svgFloorPlan(project) {
     ${rugs.map(draw).join('')}
     ${rest.map(draw).join('')}
     ${openings}
-    <text x="${g.ox + g.w / 2}" y="${g.oy - 14}" font-size="11" text-anchor="middle" fill="#1f3f6b" font-family="sans-serif">${W} cm</text>
+    <text x="${g.ox + g.w / 2}" y="${g.oy - 14}" font-size="11" text-anchor="middle" fill="#1f3f6b" font-family="inherit">${W} cm</text>
     <text x="${g.ox - 14}" y="${g.oy + g.h / 2}" font-size="11" text-anchor="middle" fill="#1f3f6b"
-      font-family="sans-serif" transform="rotate(-90 ${g.ox - 14} ${g.oy + g.h / 2})">${L} cm</text>
-    ${items.length ? '' : `<text x="${BP.W / 2}" y="${BP.H / 2}" font-size="13" text-anchor="middle" fill="#85827e" font-family="sans-serif">No products selected yet</text>`}
+      font-family="inherit" transform="rotate(-90 ${g.ox - 14} ${g.oy + g.h / 2})">${L} cm</text>
+    ${items.length ? '' : `<text x="${BP.W / 2}" y="${BP.H / 2}" font-size="13" text-anchor="middle" fill="#85827e" font-family="inherit">No products selected yet</text>`}
   </svg>`;
 }
 
@@ -294,7 +294,7 @@ function svgRender(project) {
     ${rug ? `<ellipse cx="${VW / 2}" cy="${floorY + 40}" rx="${Math.min(VW / 2 - 20, rug.w * k / 1.6)}" ry="28" fill="${rug.color}" opacity=".9"/>` : ''}
     ${drawn}
     <rect x="0" y="${VH - 26}" width="${VW}" height="26" fill="rgba(36,31,27,.72)"/>
-    <text x="12" y="${VH - 9}" font-size="11" fill="#fdfdfb" font-family="sans-serif">
+    <text x="12" y="${VH - 9}" font-size="11" fill="#fdfdfb" font-family="inherit">
       Live preview · drawn to scale (room ${dims.width}×${dims.height}cm) · not the final render
     </text>
   </svg>`;
@@ -347,7 +347,7 @@ function svgPanoramaStrip(project, idSuffix) {
     const lightness = [30, 24, 27, 21][i];          // each wall catches light differently
     return `<rect x="${x}" y="${ceilY}" width="${w.len * k}" height="${floorY - ceilY}" fill="hsl(${hue} 22% ${58 + lightness}%)"/>
       <line x1="${x}" y1="${ceilY}" x2="${x}" y2="${floorY}" stroke="hsl(${hue} 14% 52%)" stroke-width="1.5" opacity=".5"/>
-      <text x="${x + 12}" y="${ceilY + 18}" font-size="11" font-family="sans-serif" fill="hsl(${hue} 12% 42%)">${wallName(w.id).toLowerCase()}</text>`;
+      <text x="${x + 12}" y="${ceilY + 18}" font-size="11" font-family="inherit" fill="hsl(${hue} 12% 42%)">${wallName(w.id).toLowerCase()}</text>`;
   }).join('');
 
   const openings = roomOpenings(project.brief).map(o => {

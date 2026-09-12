@@ -12,8 +12,8 @@
   --warn-soft: #f8ecd9;
   --radius: 12px;
   --shadow: 0 1px 2px rgba(36,31,27,.05), 0 8px 24px rgba(36,31,27,.06);
-  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
-  --serif: "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --serif: Newsreader, "Iowan Old Style", Georgia, "Times New Roman", serif;
 }
 
 * { box-sizing: border-box; }
@@ -28,7 +28,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3 { font-family: var(--serif); font-weight: 600; letter-spacing: -.01em; margin: 0; }
+h1, h2, h3 { font-family: var(--serif); font-weight: 600; letter-spacing: -.005em; margin: 0; }
 h1 { font-size: 2.4rem; line-height: 1.15; }
 h2 { font-size: 1.5rem; }
 h3 { font-size: 1.1rem; }
