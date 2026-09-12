@@ -294,7 +294,7 @@ function svgRender(project) {
     ${rug ? `<ellipse cx="${VW / 2}" cy="${floorY + 40}" rx="${Math.min(VW / 2 - 20, rug.w * k / 1.6)}" ry="28" fill="${rug.color}" opacity=".9"/>` : ''}
     ${drawn}
     <rect x="0" y="${VH - 26}" width="${VW}" height="26" fill="rgba(36,31,27,.72)"/>
-    <text x="12" y="${VH - 9}" font-size="11" fill="#fdfaf5" font-family="sans-serif">
+    <text x="12" y="${VH - 9}" font-size="11" fill="#fdfdfb" font-family="sans-serif">
       Live preview · drawn to scale (room ${dims.width}×${dims.height}cm) · not the final render
     </text>
   </svg>`;

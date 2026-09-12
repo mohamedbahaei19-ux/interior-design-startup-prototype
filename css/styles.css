@@ -1,5 +1,5 @@
 :root {
-  --bg: #fdfaf5;
+  --bg: #fdfdfb;
   --panel: #ffffff;
   --ink: #241f1b;
   --ink-soft: #6d635a;
@@ -41,7 +41,7 @@ a { color: inherit; }
   display: flex; align-items: center; gap: 24px;
   padding: 14px 28px;
   border-bottom: 1px solid var(--line);
-  background: rgba(253,250,245,.92);
+  background: rgba(253,253,251,.92);
   backdrop-filter: blur(8px);
   position: sticky; top: 0; z-index: 20;
 }
@@ -443,7 +443,7 @@ input[type=range]::-moz-range-thumb {
 .pano-arrow {
   position: absolute; top: 50%; transform: translateY(-50%);
   width: 34px; height: 34px; padding: 0; border-radius: 50%;
-  background: rgba(253,250,245,.9); color: var(--ink); font-size: 20px; line-height: 1;
+  background: rgba(253,253,251,.9); color: var(--ink); font-size: 20px; line-height: 1;
   border: 1px solid var(--line);
 }
 .pano-arrow.left { left: 10px; }
