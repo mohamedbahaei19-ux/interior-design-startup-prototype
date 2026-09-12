@@ -12,6 +12,8 @@ with emerging designers who deliver a fixed-price, ready-to-buy design.
 python3 serve.py          # http://localhost:8127
 ```
 
+To share it with someone else, see [DEPLOY.md](DEPLOY.md) — GitHub Pages, one push.
+
 Plain HTML/CSS/JS — no build step, no dependencies, no network calls. State lives in
 `localStorage`, so the customer and designer sides talk to each other in one browser.
 
@@ -27,10 +29,12 @@ Designers sign in as one of the seeded profiles. There's no password — it's a 
 ## The loop it demonstrates
 
 1. **Brief** (`#/brief/1`) — room and package.
-2. **In your own words** — the customer writes what they want as free text, and the platform
-   reads a style direction out of it and shows that back to them. Budget is a slider.
-3. **Blueprint** — drag the handles to resize the room until it matches, then click a wall to
-   drop in a door or a window. Click an opening to remove it. Photos upload here too.
+2. **In your own words** — the customer writes what they want as free text. Style tags are
+   optional extras they can add afterwards; we suggest some from what they wrote but never
+   apply them. Budget is a slider whose range depends on the package.
+3. **Capture the room** — a guided four-shot camera flow: stand in the middle, photograph each
+   wall, turning a quarter turn between shots. Tag any wall that has a window or a door.
+   Then three measurements, which are what give the 360° view its scale.
 4. **Match** — designers ranked by style fit, room type and reviews.
 5. **Checkout** — payment marked held in escrow.
 6. **Designer workspace** — the brief arrives complete. Filter the product library, add pieces,
@@ -50,8 +54,8 @@ It unrolls all four walls into one strip and wraps seamlessly, so you can turn a
 
 Each piece is placed on the wall it actually sits nearest in the floor plan, at its real offset
 along that wall, scaled to its real width and height against the real ceiling height. Doors and
-windows come from the blueprint. Pieces further into the room are drawn slightly larger and lower,
-which is the only bit of fakery in the geometry.
+windows come from whichever walls the customer tagged during capture. Pieces further into the room
+are drawn slightly larger and lower, which is the only bit of fakery in the geometry.
 
 `pano-test.html` drives the viewer with synthetic pointer events and prints pass/fail on the page —
 open it after touching the panning, wrap or compass code. It isn't part of the app.
@@ -81,9 +85,12 @@ room type (30%) and rating (15%).
 
 ## What's real vs. faked
 
-Real: role-gated accounts, style detection from free text, matching, fit checking against the
-blueprint, budget tracking, escrow state machine, revision limit, floor-plan auto-layout,
-panorama geometry and wrapping.
+Real: role-gated accounts, style suggestions from free text, matching, fit checking against the
+customer's measurements, per-package budget ranges, the escrow state machine, the revision limit,
+floor-plan auto-layout, and the panorama geometry and wrapping.
+
+The camera capture is real — it uses `getUserMedia`, so it needs an HTTPS origin (or localhost);
+elsewhere it falls back to file upload and says why.
 
 Faked: payments, passwords, file storage, and the image-generation step — the panorama is SVG
 drawn from measurements and product dimensions, standing in for a real render. Products,
@@ -104,10 +111,11 @@ designers, reviews and social handles are seeded in `js/data.js`.
 ```
 index.html            shell
 serve.py              static file server
+publish.sh            push to GitHub Pages (see DEPLOY.md)
 css/styles.css        all styling
 js/data.js            seed data, pricing placeholders, style keywords
 js/store.js           state, accounts, persistence, matching, fit checks
-js/render.js          SVG: silhouettes, blueprint, floor plan, 360° panorama
+js/render.js          SVG: silhouettes, floor plan, 360° panorama
 js/views-customer.js  sign-in, landing, brief wizard, matching, checkout, project
 js/views-designer.js  queue, workspace, application
 js/app.js             hash router + auth gate
