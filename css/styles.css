@@ -280,15 +280,34 @@ input[type=range]::-moz-range-thumb {
 }
 .budget-value { font-family: var(--serif); font-size: 1.7rem; min-width: 120px; text-align: right; }
 
-/* ---------- optional style tags ---------- */
+/* ---------- checkout ---------- */
 
-.choice.compact { padding: 10px 12px; }
-.suggest { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
-.pill-add {
-  background: var(--accent-soft); color: var(--accent); border: 1px dashed var(--accent);
-  border-radius: 99px; padding: 3px 10px; font-size: 12px;
+.checkout { max-width: 620px; margin: 0 auto; }
+.co-card { padding: 0; overflow: hidden; }
+.co-designer {
+  display: flex; align-items: center; gap: 14px;
+  padding: 20px; border-bottom: 1px solid var(--line);
 }
-.pill-add:hover { background: var(--accent); color: #fff; }
+.co-list { list-style: none; margin: 0; padding: 18px 20px; border-bottom: 1px solid var(--line); }
+.co-list li { display: flex; gap: 11px; align-items: flex-start; padding: 7px 0; }
+.co-list svg { color: var(--good); flex: none; margin-top: 3px; }
+.co-list strong { display: block; font-size: 14px; font-weight: 600; }
+.co-list span { font-size: 12.5px; color: var(--ink-soft); }
+
+.co-price { width: 100%; border-collapse: collapse; padding: 0 20px; margin: 14px 0 0; }
+.co-price td { padding: 7px 20px; font-size: 14px; }
+.co-price td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.co-total td {
+  border-top: 1px solid var(--line); padding-top: 12px;
+  font-family: var(--serif); font-size: 17px;
+}
+.co-fine { padding: 0 20px; margin: 6px 0 0; }
+.co-notes {
+  border-top: 1px solid var(--line); margin-top: 14px;
+  padding: 16px 20px 18px; background: #fbf8f2;
+}
+.co-notes p { font-size: 13px; margin: 0 0 8px; line-height: 1.55; }
+.co-notes p:last-child { margin: 0; }
 
 /* ---------- guided room capture ---------- */
 

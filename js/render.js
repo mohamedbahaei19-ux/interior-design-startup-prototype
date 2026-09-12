@@ -8,8 +8,9 @@ const shade = (hex, amt) => {
   return '#' + [f(n >> 16), f((n >> 8) & 255), f(n & 255)].map(v => v.toString(16).padStart(2, '0')).join('');
 };
 
+/* Wall tint follows the assigned designer's palette. */
 const STYLE_HUE = { scandi: 36, japandi: 30, midcentury: 24, industrial: 210, boho: 20, minimal: 210, classic: 140, eclectic: 280 };
-const briefHue = brief => STYLE_HUE[(brief.styles || [])[0]] || 36;
+const projectHue = project => STYLE_HUE[(designer(project.designerId) || {}).styles?.[0]] || 36;
 
 /* Silhouettes live in a 100×100 box, bottom-aligned on y=100, so the same
    markup works for a thumbnail, an elevation and the panorama. */
@@ -271,7 +272,7 @@ function svgRender(project) {
 
   const VW = 640, VH = 400, floorY = 330;
   const k = Math.min((VW - 40) / dims.width, (floorY - 40) / dims.height);
-  const hue = briefHue(project.brief);
+  const hue = projectHue(project);
 
   let cursor = 24;
   const drawn = items.map(p => {
@@ -328,7 +329,7 @@ function assignToWalls(placed, dims) {
 
 function svgPanoramaStrip(project, idSuffix) {
   const dims = project.brief.dims;
-  const hue = briefHue(project.brief);
+  const hue = projectHue(project);
   const items = project.design.items.map(it => product(it.productId)).filter(Boolean);
   const placed = assignToWalls(autoLayout(items, dims.width, dims.length), dims);
 

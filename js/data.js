@@ -1,4 +1,4 @@
-/* Seed data for the Kamer prototype. Dimensions in cm.
+/* Seed data for the prototype. Dimensions in cm.
 
    PRICING: what *we* charge is still undecided, so every platform price
    (designer fee, booking fee, commission, payout) renders as "X" via feeLabel().
@@ -19,31 +19,6 @@ const STYLES = [
   { id: 'classic',    name: 'Warm classic',    hint: 'Deep tones, timeless' },
   { id: 'eclectic',   name: 'Eclectic',        hint: 'Bold colour, mixed eras' }
 ];
-
-/* Used to read a style out of what the customer writes in their own words. */
-const STYLE_KEYWORDS = {
-  scandi:     ['scandi', 'scandinavian', 'nordic', 'pale wood', 'light wood', 'birch', 'airy', 'bright', 'linen'],
-  japandi:    ['japandi', 'japanese', 'zen', 'calm', 'serene', 'quiet', 'uncluttered', 'low furniture', 'wabi', 'peaceful'],
-  midcentury: ['mid-century', 'midcentury', 'mid century', 'retro', 'walnut', 'danish', 'tapered', 'sixties', '60s', '70s'],
-  industrial: ['industrial', 'loft', 'metal', 'concrete', 'raw', 'exposed', 'leather', 'steel', 'moody'],
-  boho:       ['boho', 'bohemian', 'texture', 'plants', 'rattan', 'cane', 'layered', 'cosy', 'cozy', 'earthy', 'natural'],
-  minimal:    ['minimal', 'minimalist', 'clean', 'simple', 'sleek', 'modern', 'pared back', 'neutral', 'clutter'],
-  classic:    ['classic', 'timeless', 'traditional', 'elegant', 'warm', 'deep green', 'rich', 'grown up', 'sophisticated'],
-  eclectic:   ['eclectic', 'bold', 'colour', 'color', 'colourful', 'colorful', 'playful', 'maximal', 'art', 'vintage', 'mix']
-};
-
-/* Reads the customer's description and guesses up to three styles.
-   Shown back to them so they can see what the platform understood. */
-function detectStyles(text) {
-  const t = (text || '').toLowerCase();
-  if (!t.trim()) return [];
-  return Object.entries(STYLE_KEYWORDS)
-    .map(([id, words]) => ({ id, score: words.filter(w => t.includes(w)).length }))
-    .filter(s => s.score > 0)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 3)
-    .map(s => s.id);
-}
 
 const ROOMS = [
   { id: 'living',  name: 'Living room', sub: 'Sofa, seating, lighting' },
@@ -73,26 +48,10 @@ const PACKAGES = [
 /* The customer's furniture budget, set with a slider. A refresh is a few
    pieces, so it gets a much tighter range than furnishing a room from scratch. */
 const BUDGET_RANGES = {
-  refresh:  { min: 250,  max: 4000,  step: 50,  default: 1500 },
-  complete: { min: 1500, max: 15000, step: 250, default: 5000 }
+  refresh:  { min: 100, max: 5000,  step: 50,  default: 1000 },
+  complete: { min: 300, max: 10000, step: 100, default: 3000 }
 };
 const budgetRange = pkgId => BUDGET_RANGES[pkgId] || BUDGET_RANGES.refresh;
-
-/* Hints shown under the slider, as a fraction of the package's own range. */
-function budgetHint(n, pkgId) {
-  const r = budgetRange(pkgId);
-  const t = (n - r.min) / (r.max - r.min);
-  if (pkgId === 'complete') {
-    if (t < 0.2) return 'Tight for a whole room — expect flat-pack plus second-hand sourcing.';
-    if (t < 0.45) return 'A full room done sensibly: solid basics, one piece worth keeping.';
-    if (t < 0.75) return 'Comfortable. Room for a good sofa or bed without cutting elsewhere.';
-    return 'Enough for designer pieces from our curated partner brands.';
-  }
-  if (t < 0.2) return 'Enough for a rug, lighting and a couple of small changes.';
-  if (t < 0.45) return 'A rug, lighting and storage, or one mid-range statement piece.';
-  if (t < 0.75) return 'Room for one big piece — a sofa or a bed — plus the pieces around it.';
-  return 'Generous for a refresh. Your designer can go for quality over quantity.';
-}
 
 /* The four shots the guided capture asks for, taken from one spot in the
    middle of the room. Together with the measurements they give the panorama

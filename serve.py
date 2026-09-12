@@ -21,5 +21,5 @@ class Handler(SimpleHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    print(f"Kamer prototype running at http://localhost:{PORT}")
+    print(f"Prototype running at http://localhost:{PORT}")
     ThreadingHTTPServer(("127.0.0.1", PORT), partial(Handler, directory=ROOT)).serve_forever()

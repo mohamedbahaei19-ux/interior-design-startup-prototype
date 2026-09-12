@@ -9,7 +9,7 @@
 set -euo pipefail
 
 USER="${1:-}"
-REPO="${2:-kamer-prototype}"
+REPO="${2:-interior-prototype}"
 
 if [ -z "$USER" ]; then
   echo "usage: ./publish.sh <your-github-username> [repo-name]" >&2

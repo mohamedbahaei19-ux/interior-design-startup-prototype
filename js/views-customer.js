@@ -10,7 +10,7 @@ let authDesignerId = 'd1';
 V.login = (next) => ({
   html: `<div class="auth stack">
     <div class="center">
-      <h1 style="font-size:1.9rem">Welcome to Kamer</h1>
+      <h1 style="font-size:1.9rem">Welcome</h1>
       <p class="muted">One account. Tell us which side of the room you're on.</p>
     </div>
     <div class="role-pick">
@@ -18,7 +18,7 @@ V.login = (next) => ({
         <span class="role-icon">🛋️</span>
         <span>
           <strong>I have a room to design</strong>
-          <div class="small muted">Describe your room, get matched with a designer, and receive a
+          <div class="small muted">Describe your room, pick a designer, and receive a
           ready-to-buy shopping list.</div>
         </span>
       </button>
@@ -94,8 +94,8 @@ V.landing = () => ({
 
   <section class="grid g3" style="margin-bottom:56px">
     ${[
-      ['Describe the room', 'Say what you want in your own words, set a budget, and draw your room on an interactive blueprint.'],
-      ['Choose your designer', 'A shortlist matched on style, room type and reviews. Real portfolios, verified reviews, no hourly billing.'],
+      ['Describe the room', 'Say what you want in your own words, set a budget, and photograph your four walls.'],
+      ['Choose your designer', 'Browse real portfolios and verified reviews, and pick who you want. One fixed price, no hourly billing.'],
       ['See it before you buy', 'A 360° preview of your room with the new furniture in it, plus a shopping list of real products that fit.']
     ].map(([t, s], i) => `
       <div class="card">
@@ -127,7 +127,7 @@ V.landing = () => ({
 
   <section>
     <h2 style="margin-bottom:14px">Designers on the platform</h2>
-    <div class="grid g3">${DESIGNERS.slice(0, 3).map(d => designerCard(d, null)).join('')}</div>
+    <div class="grid g3">${DESIGNERS.slice(0, 3).map(d => designerCard(d)).join('')}</div>
   </section>`
 });
 
@@ -136,10 +136,10 @@ V.landing = () => ({
 V.designers = () => ({
   html: `<h1 style="margin-bottom:8px">Designers</h1>
     <p class="muted" style="margin-bottom:24px">Every applicant is reviewed before joining. Levels rise with completed projects and verified reviews.</p>
-    <div class="grid g3">${DESIGNERS.map(d => designerCard(d, null)).join('')}</div>`
+    <div class="grid g3">${DESIGNERS.map(d => designerCard(d)).join('')}</div>`
 });
 
-function designerCard(d, score, cta) {
+function designerCard(d, cta) {
   const st = Store.state;
   const completed = d.projects + st.projects.filter(p => p.designerId === d.id && p.status === 'approved').length;
   return `<div class="card designer-card">
@@ -160,11 +160,6 @@ function designerCard(d, score, cta) {
       <span>${stars(d.rating)} ${d.rating.toFixed(1)} <span class="muted">(${d.reviews})</span></span>
       <span class="muted">${completed} projects</span>
     </div>
-    ${score != null ? `
-      <div>
-        <div class="spread tiny muted" style="margin-bottom:4px"><span>Match</span><span>${Math.round(score * 100)}%</span></div>
-        <div class="match-bar"><i style="width:${score * 100}%"></i></div>
-      </div>` : ''}
     <div class="spread" style="border-top:1px solid var(--line);padding-top:12px">
       <div>
         <div style="font-family:var(--serif);font-size:20px">${feeLabel()}</div>
@@ -226,65 +221,33 @@ function briefStep1(d) {
 function briefStep2(d) {
   const r = budgetRange(d.packageId);
   const budget = d.budget == null ? r.default : d.budget;
-  const enough = d.wish.trim().length >= 15;
   return `<div class="stack">
     <div class="card">
       <h3 style="margin-bottom:4px">Tell your designer what you want</h3>
       <p class="small muted">In your own words. How should the room feel, what do you love, what do you
-      hate? Mention colours, materials, anything you've seen and liked.</p>
-      <textarea id="wish" rows="6" placeholder="Somewhere calm to land after work. I like pale wood and linen, nothing fussy. I'd rather it felt uncluttered than cosy, but not cold — and please no grey.">${esc(d.wish)}</textarea>
-      <div class="spread" style="margin-top:8px">
-        <span class="tiny muted">Your designer reads this first.</span>
-        <span class="tiny muted" id="wishcount">${wordCount(d.wish)} words</span>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="spread" style="margin-bottom:4px">
-        <h3>Style tags</h3>
-        <span class="pill pill-grey">Optional</span>
-      </div>
-      <p class="small muted">Only if you want to. Tags help us shortlist designers, but what you wrote
-      above matters more.</p>
-      <div id="suggestbar">${suggestBar(d)}</div>
-      <div class="choice-grid" style="margin-top:12px">
-        ${STYLES.map(s => `<button class="choice compact ${d.styles.includes(s.id) ? 'on' : ''}" data-style="${s.id}">
-          <span class="choice-title">${s.name}</span><span class="choice-sub">${s.hint}</span></button>`).join('')}
-      </div>
+      hate? Mention colours, materials, anything you've seen and liked. A person reads this — there's no
+      right way to write it.</p>
+      <textarea id="wish" rows="7" placeholder="Somewhere calm to land after work. I like pale wood and linen, nothing fussy. I'd rather it felt uncluttered than cosy, but not cold — and please no grey.">${esc(d.wish)}</textarea>
     </div>
 
     <div class="card">
       <div class="spread" style="margin-bottom:4px">
         <h3>Furniture budget</h3>
-        <span class="pill pill-grey">${pkg(d.packageId).name} range</span>
+        <span class="pill pill-grey">${pkg(d.packageId).name}</span>
       </div>
       <p class="small muted">What you expect to spend on the products themselves. The designer's fee is separate.</p>
-      <div class="slider-row" style="margin-top:14px">
+      <div class="slider-row" style="margin-top:16px">
         <span class="tiny muted">${eur(r.min)}</span>
         <input type="range" id="budget" min="${r.min}" max="${r.max}" step="${r.step}" value="${budget}">
         <span class="tiny muted">${eur(r.max)}+</span>
         <span class="budget-value" id="budgetval">${eur(budget)}</span>
       </div>
-      <p class="tiny muted" id="budgethint" style="margin:10px 0 0">${budgetHint(budget, d.packageId)}</p>
     </div>
 
     <div class="spread">
       <a class="btn btn-ghost" href="#/brief/1">Back</a>
-      <button id="next" ${enough ? '' : 'disabled'}>Continue</button>
+      <button id="next">Continue</button>
     </div>
-    ${enough ? '' : '<p class="small muted center">Write a sentence or two so a designer has something to work from.</p>'}
-  </div>`;
-}
-
-const wordCount = t => t.trim().split(/\s+/).filter(Boolean).length;
-
-/* Suggestions are offered, never applied automatically. */
-function suggestBar(d) {
-  const found = detectStyles(d.wish).filter(s => !d.styles.includes(s));
-  if (!found.length) return '';
-  return `<div class="suggest">
-    <span class="tiny muted">From what you wrote, you might mean</span>
-    ${found.map(s => `<button class="pill pill-add" data-suggest="${s}">+ ${styleName(s)}</button>`).join('')}
   </div>`;
 }
 
@@ -343,22 +306,12 @@ function briefMount(step) {
   if (step === 2) {
     // Update in place so typing doesn't re-render and lose the caret.
     const wish = q('#wish');
-    wish.oninput = () => {
-      d.wish = wish.value;
-      q('#wishcount').textContent = wordCount(wish.value) + ' words';
-      q('#next').disabled = wish.value.trim().length < 15;
-      q('#suggestbar').innerHTML = suggestBar(d);
-      bindSuggestions();
-      Store.save();
-    };
-    bindSuggestions();
-    document.querySelectorAll('[data-style]').forEach(b => b.onclick = () => Store.toggleStyle(b.dataset.style));
+    wish.oninput = () => { d.wish = wish.value; Store.save(); };
 
     const slider = q('#budget');
     slider.oninput = () => {
       d.budget = +slider.value;
       q('#budgetval').textContent = eur(d.budget);
-      q('#budgethint').textContent = budgetHint(d.budget, d.packageId);
       Store.save();
     };
   }
@@ -370,11 +323,6 @@ function briefMount(step) {
     });
     q('#keeps').onchange = e => { d.keeps = e.target.value; Store.save(); };
   }
-}
-
-function bindSuggestions() {
-  document.querySelectorAll('[data-suggest]').forEach(b =>
-    b.onclick = () => Store.toggleStyle(b.dataset.suggest));
 }
 
 /* ---------------- guided room capture ---------------- */
@@ -623,18 +571,18 @@ function briefPhotoStrip(brief) {
 V.match = () => {
   const d = Store.state.draft;
   if (!d.roomId || !d.packageId) return { html: redirectNotice('Start a brief first.', '#/brief/1') };
-  const ranked = rankedDesigners(d);
+  const list = designerList(d);
   return {
     html: `
     <div class="spread" style="margin-bottom:6px">
-      <h1 style="font-size:1.9rem">Your shortlist</h1>
+      <h1 style="font-size:1.9rem">Choose your designer</h1>
       <a class="btn btn-ghost btn-sm" href="#/brief/3">Edit brief</a>
     </div>
-    <p class="muted" style="margin-bottom:20px">${ranked.length} designers, ranked on how well they match
-    what you wrote, your room type, and their reviews.</p>
+    <p class="muted" style="margin-bottom:20px">${list.length} designers taking projects. Read their work
+    and pick whoever feels right — they'll read your brief themselves.</p>
     ${briefSummary(d)}
     <div class="grid g3" style="margin-top:24px">
-      ${ranked.map(({ designer: dz, score }) => designerCard(dz, score,
+      ${list.map(dz => designerCard(dz,
         `<button class="btn-accent btn-sm" data-book="${dz.id}">Choose</button>`)).join('')}
     </div>`,
     mount: () => document.querySelectorAll('[data-book]').forEach(b =>
@@ -649,7 +597,6 @@ function briefSummary(d) {
       <div><div class="tiny muted">Package</div><strong>${pkg(d.packageId).name}</strong></div>
       <div><div class="tiny muted">Furniture budget</div><strong>${eur(d.budget)}</strong></div>
       <div><div class="tiny muted">Size</div><strong>${d.dims.width} × ${d.dims.length} cm</strong></div>
-      <div><div class="tiny muted">Tags</div><strong>${d.styles.map(styleName).join(', ') || 'none added'}</strong></div>
       <div><div class="tiny muted">Walls captured</div><strong>${(d.photos || []).filter(p => p.src).length}/4</strong></div>
     </div>
     ${d.wish ? `<p class="small" style="margin:12px 0 0;border-top:1px solid var(--line);padding-top:10px">
@@ -664,37 +611,69 @@ V.checkout = (designerId) => {
   const d = Store.state.draft;
   const dz = designer(designerId);
   if (!dz || !d.packageId) return { html: redirectNotice('That booking is no longer available.', '#/brief/1') };
+  const p = pkg(d.packageId);
+  const captured = (d.photos || []).filter(x => x.src).length;
+
+  const includes = [
+    [`${p.name} for your ${roomName(d.roomId).toLowerCase()}`, `${p.items}, chosen for your room`],
+    ['A 360° preview', 'Your room with the new pieces in it, built to your measurements'],
+    ['A shopping list you can buy from', 'Real products with sizes, prices and links, each checked to fit'],
+    ['One round of revisions', `Delivered in about ${dz.turnaround} days`]
+  ];
+
   return {
-    html: `<div style="max-width:720px;margin:0 auto" class="stack">
-      <h1 style="font-size:1.9rem">Confirm your project</h1>
-      <div class="card">
-        <div class="designer-top" style="margin-bottom:14px">
-          ${avatar(dz, 52)}
-          <div><h3>${dz.name}</h3><div class="small muted">${dz.level} · ${dz.city} · delivers in ~${dz.turnaround} days</div></div>
+    html: `<div class="checkout">
+      <h1 style="font-size:1.9rem;margin-bottom:18px">Confirm your project</h1>
+
+      <div class="card co-card">
+        <div class="co-designer">
+          ${avatar(dz, 48)}
+          <div style="min-width:0;flex:1">
+            <strong>${dz.name}</strong>
+            <div class="small muted">${dz.level} · ${dz.city}</div>
+          </div>
+          <span class="small muted">${stars(dz.rating)} ${dz.rating.toFixed(1)}</span>
         </div>
-        <table class="shoplist">
-          <tr><td>${pkg(d.packageId).name} — ${roomName(d.roomId)}</td><td class="num">${feeLabel()}</td></tr>
+
+        <ul class="co-list">
+          ${includes.map(([t, sub]) => `<li>
+            <svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true">
+              <path d="M4 10.5 8 14.5 16 6" fill="none" stroke="currentColor" stroke-width="2.2"
+                stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div><strong>${t}</strong><span>${sub}</span></div>
+          </li>`).join('')}
+        </ul>
+
+        <table class="co-price">
+          <tr><td>${dz.name.split(' ')[0]}'s fee</td><td class="num">${feeLabel()}</td></tr>
           <tr><td>Booking fee</td><td class="num">${feeLabel()}</td></tr>
-          <tr><td><strong>Total today</strong></td><td class="num"><strong>${feeLabel()}</strong></td></tr>
+          <tr class="co-total"><td>Total today</td><td class="num">${feeLabel()}</td></tr>
         </table>
-        <p class="small muted" style="margin-top:14px">Pricing isn't set yet — these are placeholders.
-        Furniture is bought separately by you, at your own pace, within your ${eur(d.budget)} budget.</p>
+        <p class="tiny muted co-fine">Pricing isn't set yet — these are placeholders.</p>
+
+        <div class="co-notes">
+          <p><span class="muted">Paid now, held until you approve.</span> If the design doesn't land, the
+          revision round is included and nothing is released until you're happy.</p>
+          <p><span class="muted">Furniture is separate.</span> You buy it yourself, at your own pace,
+          within your ${eur(d.budget)} budget.</p>
+        </div>
       </div>
-      <div class="card" style="background:var(--good-soft);border-color:#cfe2d6">
-        <div class="row"><span class="pill pill-good">Held in escrow</span></div>
-        <p class="small" style="margin:10px 0 0">We hold your payment until the design is delivered and you approve it.
-        One revision round is included.</p>
-      </div>
-      <div class="spread">
-        <a class="btn btn-ghost" href="#/match">Back to shortlist</a>
+
+      <div class="spread" style="margin-top:20px">
+        <a class="btn btn-ghost" href="#/match">Back</a>
         <button class="btn-accent" id="pay">Confirm &amp; book</button>
       </div>
+
+      <p class="tiny muted center" style="margin-top:14px">
+        Your brief${captured ? `, ${captured} wall photo${captured > 1 ? 's' : ''}` : ''} and measurements
+        go to ${dz.name.split(' ')[0]} as soon as you confirm.
+      </p>
     </div>`,
     mount: () => {
       document.getElementById('pay').onclick = () => {
-        const p = Store.createProject(designerId);
+        const proj = Store.createProject(designerId);
         toast('Booked. Payment is held until delivery.');
-        location.hash = '#/project/' + p.id;
+        location.hash = '#/project/' + proj.id;
       };
     }
   };
@@ -909,7 +888,6 @@ function deliveredView(p, dz) {
         <h3>Your brief</h3>
         <p class="small" style="margin:8px 0 0">"${esc(p.brief.wish)}"</p>
         <div class="small" style="margin-top:10px;border-top:1px solid var(--line);padding-top:10px">
-          <div class="spread"><span class="muted">Reads as</span><span>${p.brief.styles.map(styleName).join(', ') || '—'}</span></div>
           <div class="spread"><span class="muted">Room</span><span>${p.brief.dims.width}×${p.brief.dims.length} cm</span></div>
           <div class="spread"><span class="muted">Budget</span><span>${briefBudget(p.brief).label}</span></div>
         </div>

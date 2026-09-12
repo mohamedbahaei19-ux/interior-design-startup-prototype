@@ -1,10 +1,10 @@
-# Kamer — prototype
+# Prototype — interior design marketplace
 
 A clickable prototype of the interior design marketplace described in
 *Interior Design Startup — Business Plan*: customers with one room to furnish are matched
 with emerging designers who deliver a fixed-price, ready-to-buy design.
 
-"Kamer" is a placeholder for `[Company Name]`.
+The brand is shown as "Prototype" for now — `[Company Name]` in the business plan is still open.
 
 ## Running it
 

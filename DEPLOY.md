@@ -11,7 +11,7 @@ does not. GitHub Pages serves over HTTPS, so the camera works for anyone you sen
 
 Go to <https://github.com/new>:
 
-- **Name:** `kamer-prototype`
+- **Name:** `interior-prototype`
 - **Public** — free GitHub Pages needs a public repo
 - **Don't** tick "Add a README", ".gitignore" or a licence — this repo already has a commit
 
@@ -31,14 +31,14 @@ code private").
 
 ## 3. Turn on Pages
 
-`https://github.com/<username>/kamer-prototype/settings/pages`
+`https://github.com/<username>/interior-prototype/settings/pages`
 
 Source → **Deploy from a branch** → Branch **main**, folder **/ (root)** → Save.
 
 A minute later it's live at:
 
 ```
-https://<username>.github.io/kamer-prototype/
+https://<username>.github.io/interior-prototype/
 ```
 
 That's the link to send your cofounder.
@@ -58,7 +58,7 @@ Pages redeploys automatically, usually within a minute.
 Send them straight to the finished example — it needs no sign-up:
 
 ```
-https://<username>.github.io/kamer-prototype/#/demo
+https://<username>.github.io/interior-prototype/#/demo
 ```
 
 From there: drag the 360° view, open the shopping list, then sign out and back in as

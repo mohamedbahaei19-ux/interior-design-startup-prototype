@@ -1,13 +1,13 @@
 /* App state + localStorage persistence. Single mutable object, re-render on change. */
 
-const STORAGE_KEY = 'kamer.prototype.v2';
+const STORAGE_KEY = 'prototype.v2';
+const LEGACY_KEY = 'kamer.prototype.v2';   // pre-rename saves
 
 const emptyDraft = () => ({
   roomId: null,
   packageId: null,
   budget: null,                  // set when a package is picked, from its own range
   wish: '',                      // the customer's own words
-  styles: [],                    // optional tags the customer adds themselves
   keeps: '',
   photos: [],                    // [{ wall, src, features: { window, door } }]
   dims: { width: 380, length: 450, height: 250 }
@@ -26,7 +26,7 @@ const Store = {
 
   load() {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
+      const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem(LEGACY_KEY);
       if (raw) this.state = Object.assign(defaultState(), JSON.parse(raw));
     } catch (e) {
       console.warn('Could not read saved state, starting fresh.', e);
@@ -46,6 +46,7 @@ const Store = {
   reset() {
     this.state = defaultState();
     localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(LEGACY_KEY);
     this.emit();
   },
 
@@ -88,16 +89,6 @@ const Store = {
 
   setWish(text) {
     this.state.draft.wish = text;
-    this.emit();
-  },
-
-  /* Style tags are optional and entirely the customer's choice. */
-  toggleStyle(id) {
-    const s = this.state.draft.styles;
-    const i = s.indexOf(id);
-    if (i >= 0) s.splice(i, 1);
-    else if (s.length < 3) s.push(id);
-    else { toast('Three tags is plenty — remove one first.'); return; }
     this.emit();
   },
 
@@ -243,7 +234,6 @@ const Store = {
         roomId: 'living', packageId: 'refresh', budget: 3000,
         wish: 'Somewhere calm to land after work. I like pale wood and linen, nothing fussy — ' +
               'quite Japandi, quite Scandi. It should feel uncluttered but not cold.',
-        styles: ['japandi', 'scandi'],
         keeps: 'Keeping the oak dining table by the window. Rental — no drilling into walls.',
         photos: [
           { wall: 'n', src: '', features: { window: true, door: false } },
@@ -327,22 +317,17 @@ function fitsRoom(prod, brief) {
   return { ok: true, reason: '' };
 }
 
-/* Match score 0–1. Platform pricing is undecided, so this weighs style fit,
-   room type and track record only. */
-function matchScore(d, brief) {
-  const styles = brief.styles || [];
-  const overlap = styles.filter(s => d.styles.includes(s)).length;
-  let score = 0;
-  score += styles.length ? (overlap / styles.length) * 0.55 : 0.3;
-  score += d.rooms.includes(brief.roomId) ? 0.3 : 0.06;
-  score += (d.rating - 4.5) * 0.25;
-  return clamp(score, 0.15, 0.99);
-}
-
-function rankedDesigners(brief) {
-  return DESIGNERS
-    .map(d => ({ designer: d, score: matchScore(d, brief) }))
-    .sort((a, b) => b.score - a.score);
+/* No automated matching in phase one — a person reads the brief. This is just
+   a sensible default order for browsing: designers who work in this room type
+   first, then by track record. */
+function designerList(brief) {
+  return DESIGNERS.slice().sort((a, b) => {
+    const roomA = a.rooms.includes(brief.roomId) ? 1 : 0;
+    const roomB = b.rooms.includes(brief.roomId) ? 1 : 0;
+    if (roomA !== roomB) return roomB - roomA;
+    if (b.rating !== a.rating) return b.rating - a.rating;
+    return b.projects - a.projects;
+  });
 }
 
 /* Products a designer would see for this brief, sorted by relevance. */
@@ -355,7 +340,6 @@ function libraryFor(brief, filters = {}) {
     .map(p => {
       let rel = 0;
       rel += p.rooms.includes(brief.roomId) ? 2 : 0;
-      rel += (brief.styles || []).filter(s => p.styles.includes(s)).length;
       rel += p.price <= b.max * 0.45 ? 0.5 : 0;
       return { p, rel };
     })

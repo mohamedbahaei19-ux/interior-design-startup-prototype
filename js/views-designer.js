@@ -38,8 +38,8 @@ D.dashboard = () => {
       return `<div class="card spread">
         <div>
           <strong>${roomName(p.brief.roomId)} · ${pkg(p.packageId).name}</strong>
-          <div class="small muted">${p.id} · ${p.brief.styles.map(styleName).join(', ') || 'no style read'} ·
-            ${p.brief.dims.width}×${p.brief.dims.length}cm · budget ${briefBudget(p.brief).label}</div>
+          <div class="small muted">${p.id} · ${p.brief.dims.width}×${p.brief.dims.length}cm ·
+            budget ${briefBudget(p.brief).label}</div>
         </div>
         <div class="row">
           ${statusPill(p)}
@@ -96,10 +96,9 @@ D.workspace = (id) => {
 
     <div class="card" style="margin-bottom:20px">
       <div class="spread" style="margin-bottom:10px"><h3>The brief</h3>
-        <span class="small muted">Photos, blueprint and measurements arrive with the project</span></div>
+        <span class="small muted">Their words, wall photos and measurements arrive with the project</span></div>
       <p class="small" style="margin:0 0 12px">"${esc(p.brief.wish)}"</p>
       <div class="row" style="gap:22px;border-top:1px solid var(--line);padding-top:12px">
-        <div><div class="tiny muted">Reads as</div><strong>${p.brief.styles.map(styleName).join(', ') || '—'}</strong></div>
         <div><div class="tiny muted">Furniture budget</div><strong>${b.label}</strong></div>
         <div><div class="tiny muted">Room</div><strong>${p.brief.dims.width} × ${p.brief.dims.length} cm</strong></div>
         <div><div class="tiny muted">Ceiling</div><strong>${p.brief.dims.height} cm</strong></div>
@@ -265,7 +264,7 @@ D.workspace = (id) => {
 
 D.apply = () => ({
   html: `<div style="max-width:640px;margin:0 auto" class="stack">
-    <h1 style="font-size:1.9rem">Design on Kamer</h1>
+    <h1 style="font-size:1.9rem">Design with us</h1>
     <p class="muted">Paid projects, a portfolio that builds itself, and verified reviews.
     You set your prices, choose your projects, and keep your own clients.</p>
     <div class="card">
