@@ -79,7 +79,7 @@ function render() {
     ? `<div class="account">
         ${account.role === 'designer'
           ? avatar(Store.me(), 32)
-          : `<div class="avatar" style="width:32px;height:32px;font-size:13px;background:#8d8275">${
+          : `<div class="avatar" style="width:32px;height:32px;font-size:13px;background:#85827e">${
               (account.name[0] || '?').toUpperCase()}</div>`}
         <div>
           <div class="account-name">${esc(account.name)}</div>

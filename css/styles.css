@@ -1,9 +1,9 @@
 :root {
   --bg: #fdfdfb;
   --panel: #ffffff;
-  --ink: #241f1b;
-  --ink-soft: #6d635a;
-  --line: #e6ded2;
+  --ink: #232221;
+  --ink-soft: #6a6764;
+  --line: #e6e4e0;
   --accent: #1f3f6b;
   --accent-soft: #e7edf6;
   --good: #3f7d58;
@@ -105,7 +105,7 @@ button:disabled { opacity: .4; cursor: not-allowed; }
 }
 .pill-good { background: var(--good-soft); color: var(--good); }
 .pill-warn { background: var(--warn-soft); color: var(--warn); }
-.pill-grey { background: #eee7dd; color: var(--ink-soft); }
+.pill-grey { background: #ecebe8; color: var(--ink-soft); }
 
 label { display: block; font-size: 13px; color: var(--ink-soft); margin-bottom: 6px; }
 input[type=text], input[type=number], input[type=email], textarea, select {
@@ -304,7 +304,7 @@ input[type=range]::-moz-range-thumb {
 .co-fine { padding: 0 20px; margin: 6px 0 0; }
 .co-notes {
   border-top: 1px solid var(--line); margin-top: 14px;
-  padding: 16px 20px 18px; background: #fbf8f2;
+  padding: 16px 20px 18px; background: #faf9f8;
 }
 .co-notes p { font-size: 13px; margin: 0 0 8px; line-height: 1.55; }
 .co-notes p:last-child { margin: 0; }
@@ -315,13 +315,13 @@ input[type=range]::-moz-range-thumb {
 @media (max-width: 620px) { .shot-grid { grid-template-columns: 1fr; } }
 .shot-frame {
   position: relative; aspect-ratio: 4 / 3; border-radius: 10px; overflow: hidden;
-  border: 2px dashed var(--line); background: #f6f1e8; cursor: pointer;
+  border: 2px dashed var(--line); background: #f4f3f1; cursor: pointer;
   display: grid; place-items: center;
 }
 .shot-frame:hover { border-color: var(--accent); }
 .shot.has .shot-frame { border-style: solid; border-color: var(--good); }
 .shot-frame img { width: 100%; height: 100%; object-fit: cover; }
-.shot-num { font-family: var(--serif); font-size: 30px; color: #cbbfa9; }
+.shot-num { font-family: var(--serif); font-size: 30px; color: #c8c5c0; }
 .shot-label {
   position: absolute; left: 8px; bottom: 8px; background: rgba(36,31,27,.74);
   color: var(--bg); font-size: 11px; padding: 3px 9px; border-radius: 99px;
@@ -336,7 +336,7 @@ input[type=range]::-moz-range-thumb {
 
 .cam-stage {
   position: relative; border-radius: var(--radius); overflow: hidden;
-  background: #241f1b; aspect-ratio: 4 / 3;
+  background: #232221; aspect-ratio: 4 / 3;
 }
 .cam-stage video { width: 100%; height: 100%; object-fit: cover; display: block; }
 .cam-stage.flash::after {
@@ -427,7 +427,7 @@ input[type=range]::-moz-range-thumb {
 .pano-stage { position: relative; }
 .pano-view {
   max-width: 100%; border-radius: var(--radius);
-  border: 1px solid var(--line); background: #ece4d7; cursor: grab;
+  border: 1px solid var(--line); background: #eae9e6; cursor: grab;
   overflow-x: auto; overflow-y: hidden;
   user-select: none; touch-action: pan-y;
   scrollbar-width: none; -ms-overflow-style: none;

@@ -76,8 +76,8 @@ function svgProduct(p, size = 100) {
   const x = 50 - dw / 2;
   const y = 92 - dh;
   return `<svg viewBox="0 0 100 100" width="${size}" height="${size}" role="img" aria-label="${esc(p.name)}">
-    <rect width="100" height="100" rx="8" fill="#f6f1e8"/>
-    <rect x="0" y="86" width="100" height="14" fill="#ece4d7"/>
+    <rect width="100" height="100" rx="8" fill="#f4f3f1"/>
+    <rect x="0" y="86" width="100" height="14" fill="#e9e8e4"/>
     <g transform="translate(${x} ${y}) scale(${dw / 100} ${dh / 100})">${silhouette(p.cat, p.color)}</g>
   </svg>`;
 }
@@ -233,7 +233,7 @@ function svgFloorPlan(project) {
   const draw = p => {
     const x = g.ox + p.x * g.k, y = g.oy + p.y * g.k, w = p.w * g.k, h = p.d * g.k;
     const label = w > 44 ? `<text x="${x + w / 2}" y="${y + h / 2 + 3}" font-size="9" text-anchor="middle"
-        fill="#3a332c" font-family="sans-serif">${esc(p.prod.name.split(' ')[0])}</text>` : '';
+        fill="#373532" font-family="sans-serif">${esc(p.prod.name.split(' ')[0])}</text>` : '';
     return `<g><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3"
         fill="${p.cat === 'rug' ? p.prod.color : shade(p.prod.color, 12)}"
         fill-opacity="${p.cat === 'rug' ? .55 : 1}"
@@ -243,14 +243,14 @@ function svgFloorPlan(project) {
 
   const openings = roomOpenings(project.brief).map(o => {
     const r = openingRect(o, dims, g);
-    return `<rect x="${r.x}" y="${r.y}" width="${r.w}" height="${r.h}" fill="#fbf7f0"
+    return `<rect x="${r.x}" y="${r.y}" width="${r.w}" height="${r.h}" fill="#fbfaf8"
       stroke="${o.type === 'door' ? '#241f1b' : '#3d7ea6'}" stroke-width="1.5"/>`;
   }).join('');
 
   return `<svg viewBox="0 0 ${BP.W} ${BP.H}" width="100%" aria-label="Floor plan">
-    <rect width="${BP.W}" height="${BP.H}" fill="#fbf7f0"/>
-    <rect x="${g.ox}" y="${g.oy}" width="${g.w}" height="${g.h}" fill="#fff" stroke="#241f1b" stroke-width="3"/>
-    <g opacity=".16" stroke="#8d8275">
+    <rect width="${BP.W}" height="${BP.H}" fill="#fbfaf8"/>
+    <rect x="${g.ox}" y="${g.oy}" width="${g.w}" height="${g.h}" fill="#fff" stroke="#232221" stroke-width="3"/>
+    <g opacity=".16" stroke="#85827e">
       ${Array.from({ length: Math.floor(W / 50) }, (_, i) => `<line x1="${g.ox + (i + 1) * 50 * g.k}" y1="${g.oy}" x2="${g.ox + (i + 1) * 50 * g.k}" y2="${g.oy + g.h}"/>`).join('')}
       ${Array.from({ length: Math.floor(L / 50) }, (_, i) => `<line x1="${g.ox}" y1="${g.oy + (i + 1) * 50 * g.k}" x2="${g.ox + g.w}" y2="${g.oy + (i + 1) * 50 * g.k}"/>`).join('')}
     </g>
@@ -260,7 +260,7 @@ function svgFloorPlan(project) {
     <text x="${g.ox + g.w / 2}" y="${g.oy - 14}" font-size="11" text-anchor="middle" fill="#1f3f6b" font-family="sans-serif">${W} cm</text>
     <text x="${g.ox - 14}" y="${g.oy + g.h / 2}" font-size="11" text-anchor="middle" fill="#1f3f6b"
       font-family="sans-serif" transform="rotate(-90 ${g.ox - 14} ${g.oy + g.h / 2})">${L} cm</text>
-    ${items.length ? '' : `<text x="${BP.W / 2}" y="${BP.H / 2}" font-size="13" text-anchor="middle" fill="#8d8275" font-family="sans-serif">No products selected yet</text>`}
+    ${items.length ? '' : `<text x="${BP.W / 2}" y="${BP.H / 2}" font-size="13" text-anchor="middle" fill="#85827e" font-family="sans-serif">No products selected yet</text>`}
   </svg>`;
 }
 
@@ -357,7 +357,7 @@ function svgPanoramaStrip(project, idSuffix) {
     const x = s.x + o.pos * len * k - ow / 2;
     if (o.type === 'door') {
       const dh = Math.min(210, dims.height - 10) * k;
-      return `<g><rect x="${x}" y="${floorY - dh}" width="${ow}" height="${dh}" rx="3" fill="hsl(${hue} 16% 74%)" stroke="#241f1b" stroke-width="2"/>
+      return `<g><rect x="${x}" y="${floorY - dh}" width="${ow}" height="${dh}" rx="3" fill="hsl(${hue} 16% 74%)" stroke="#232221" stroke-width="2"/>
         <circle cx="${x + ow - 10}" cy="${floorY - dh / 2}" r="3" fill="#241f1b"/>
         <title>Door on the ${wallName(o.wall).toLowerCase()}</title></g>`;
     }
