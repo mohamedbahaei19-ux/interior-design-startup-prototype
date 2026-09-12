@@ -23,7 +23,7 @@ const routes = [
 const NAV = {
   customer: () => [
     ['#/', 'How it works'],
-    ['#/brief/1', 'Design my room'],
+    ['#/brief/1', 'Get started'],
     ['#/designers', 'Designers'],
     [`#/projects`, `Your projects${Store.state.projects.length ? ` (${Store.state.projects.length})` : ''}`]
   ],

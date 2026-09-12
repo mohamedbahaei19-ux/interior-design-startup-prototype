@@ -244,7 +244,7 @@ function svgFloorPlan(project) {
   const openings = roomOpenings(project.brief).map(o => {
     const r = openingRect(o, dims, g);
     return `<rect x="${r.x}" y="${r.y}" width="${r.w}" height="${r.h}" fill="#fbf7f0"
-      stroke="${o.type === 'door' ? '#b8563a' : '#3d7ea6'}" stroke-width="1.5"/>`;
+      stroke="${o.type === 'door' ? '#241f1b' : '#3d7ea6'}" stroke-width="1.5"/>`;
   }).join('');
 
   return `<svg viewBox="0 0 ${BP.W} ${BP.H}" width="100%" aria-label="Floor plan">
@@ -257,8 +257,8 @@ function svgFloorPlan(project) {
     ${rugs.map(draw).join('')}
     ${rest.map(draw).join('')}
     ${openings}
-    <text x="${g.ox + g.w / 2}" y="${g.oy - 14}" font-size="11" text-anchor="middle" fill="#b8563a" font-family="sans-serif">${W} cm</text>
-    <text x="${g.ox - 14}" y="${g.oy + g.h / 2}" font-size="11" text-anchor="middle" fill="#b8563a"
+    <text x="${g.ox + g.w / 2}" y="${g.oy - 14}" font-size="11" text-anchor="middle" fill="#1f3f6b" font-family="sans-serif">${W} cm</text>
+    <text x="${g.ox - 14}" y="${g.oy + g.h / 2}" font-size="11" text-anchor="middle" fill="#1f3f6b"
       font-family="sans-serif" transform="rotate(-90 ${g.ox - 14} ${g.oy + g.h / 2})">${L} cm</text>
     ${items.length ? '' : `<text x="${BP.W / 2}" y="${BP.H / 2}" font-size="13" text-anchor="middle" fill="#8d8275" font-family="sans-serif">No products selected yet</text>`}
   </svg>`;
@@ -357,8 +357,8 @@ function svgPanoramaStrip(project, idSuffix) {
     const x = s.x + o.pos * len * k - ow / 2;
     if (o.type === 'door') {
       const dh = Math.min(210, dims.height - 10) * k;
-      return `<g><rect x="${x}" y="${floorY - dh}" width="${ow}" height="${dh}" rx="3" fill="hsl(${hue} 16% 74%)" stroke="#b8563a" stroke-width="2"/>
-        <circle cx="${x + ow - 10}" cy="${floorY - dh / 2}" r="3" fill="#b8563a"/>
+      return `<g><rect x="${x}" y="${floorY - dh}" width="${ow}" height="${dh}" rx="3" fill="hsl(${hue} 16% 74%)" stroke="#241f1b" stroke-width="2"/>
+        <circle cx="${x + ow - 10}" cy="${floorY - dh / 2}" r="3" fill="#241f1b"/>
         <title>Door on the ${wallName(o.wall).toLowerCase()}</title></g>`;
     }
     const wh = 120 * k, sill = 95 * k;

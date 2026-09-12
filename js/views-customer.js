@@ -83,7 +83,7 @@ V.landing = () => ({
       <p class="lede">Tell us about your room and your budget. An emerging interior designer picks every
       piece, checks it fits, and sends you a shopping list you can actually buy — one fixed price, no hourly rates.</p>
       <div class="row" style="margin-top:22px">
-        <a class="btn btn-accent" href="#/brief/1">Design my room</a>
+        <a class="btn btn-accent" href="#/brief/1">Get started</a>
         <a class="btn btn-ghost" href="#/designers">Meet the designers</a>
       </div>
       <p class="small muted" style="margin-top:18px">One revision round included · Payment held until you get your design</p>
@@ -112,7 +112,7 @@ V.landing = () => ({
         <h2>Two packages</h2>
         <p class="muted small" style="margin:4px 0 0">Designers set their own price within a suggested range.</p>
       </div>
-      <a class="btn btn-ghost btn-sm" href="#/brief/1">Design my room</a>
+      <a class="btn btn-ghost btn-sm" href="#/brief/1">Get started</a>
     </div>
     <div class="grid g2" style="margin-top:18px">
       ${PACKAGES.map(p => `
@@ -686,7 +686,7 @@ V.projects = () => {
   if (!ps.length) return { html: `<div class="empty"><h2>No projects yet</h2>
     <p>Describe your room and choose a designer.</p>
     <div class="row" style="justify-content:center">
-      <a class="btn btn-accent" href="#/brief/1">Design my room</a>
+      <a class="btn btn-accent" href="#/brief/1">Get started</a>
       <a class="btn btn-ghost" href="#/demo">Load a finished example</a>
     </div></div>` };
   return {

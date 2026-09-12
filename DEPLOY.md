@@ -11,7 +11,7 @@ does not. GitHub Pages serves over HTTPS, so the camera works for anyone you sen
 
 Go to <https://github.com/new>:
 
-- **Name:** `interior-prototype`
+- **Name:** `interior-design-startup-prototype`
 - **Public** — free GitHub Pages needs a public repo
 - **Don't** tick "Add a README", ".gitignore" or a licence — this repo already has a commit
 
@@ -19,7 +19,7 @@ Go to <https://github.com/new>:
 
 ```bash
 cd "/Users/mohamed/Desktop/interior design startup"
-./publish.sh <your-github-username>
+./publish.sh mohamedbahaei19-ux
 ```
 
 Git will ask for your username and a password. The "password" is **not** your GitHub password —
@@ -31,14 +31,14 @@ code private").
 
 ## 3. Turn on Pages
 
-`https://github.com/<username>/interior-prototype/settings/pages`
+`https://github.com/mohamedbahaei19-ux/interior-design-startup-prototype/settings/pages`
 
 Source → **Deploy from a branch** → Branch **main**, folder **/ (root)** → Save.
 
 A minute later it's live at:
 
 ```
-https://<username>.github.io/interior-prototype/
+https://mohamedbahaei19-ux.github.io/interior-design-startup-prototype/
 ```
 
 That's the link to send your cofounder.
@@ -58,7 +58,7 @@ Pages redeploys automatically, usually within a minute.
 Send them straight to the finished example — it needs no sign-up:
 
 ```
-https://<username>.github.io/interior-prototype/#/demo
+https://mohamedbahaei19-ux.github.io/interior-design-startup-prototype/#/demo
 ```
 
 From there: drag the 360° view, open the shopping list, then sign out and back in as
